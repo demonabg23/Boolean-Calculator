@@ -107,15 +107,16 @@ namespace Logical_Expression_Interpreter.HelpingCommands
         {
             if (input.Length < prefix.Length) return false;
 
+            string lowerPrefix = ToLower(prefix);
+
             for (var i = 0; i < prefix.Length; i++)
             {
-                char c1 = ToLower(input[i]);
-                char c2 = ToLower(prefix[i]);
-                if (c1 != c2)
+                if (ToLower(input[i]) != lowerPrefix[i])
                     return false;
             }
             return true;
         }
+
 
         public bool EqualsIgnoreCase(string? str1, string? str2)
         {
@@ -135,6 +136,16 @@ namespace Logical_Expression_Interpreter.HelpingCommands
             if (c is >= 'A' and <= 'Z')
                 return (char)(c + 32);
             return c;
+        }
+
+        public string ToLower(string input)
+        {
+            var result = new char[input.Length];
+            for (var i = 0; i < input.Length; i++)
+            {
+                result[i] = ToLower(input[i]);
+            }
+            return new string(result);
         }
 
         public bool IsParameterOrFunction(string token, string[] parameters, FunctionTable functionTable)

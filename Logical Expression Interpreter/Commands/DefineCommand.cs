@@ -25,7 +25,14 @@ public class DefineCommand
             throw new ArgumentNullException(nameof(input), "Input cannot be null or empty.");
 
         var defineIndex = _helpers.FindCharacter(input, ' ');
-        if (defineIndex == -1 || _helpers.Substring(input, 0, defineIndex) != "DEFINE".ToLower())
+        if (defineIndex == -1)
+            _helpers.ThrowError("Invalid syntax. Missing space after DEFINE.");
+
+        var commandPart = _helpers.Trim(_helpers.Substring(input, 0, defineIndex));
+        var normalizedCommand = _helpers.ToLower(commandPart);
+        var expectedCommand = _helpers.ToLower("DEFINE");
+
+        if (normalizedCommand != expectedCommand)
             _helpers.ThrowError("Input must start with DEFINE.");
 
         var colonIndex = _helpers.FindCharacter(input, ':');
@@ -42,7 +49,6 @@ public class DefineCommand
 
         ParseSignature(signature);
         ValidateExpression();
-
         BuildAndStoreAST();
     }
 

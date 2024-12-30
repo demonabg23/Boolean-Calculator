@@ -20,9 +20,6 @@ public class FindCommand
             throw new InvalidOperationException("Invalid command. Must start with 'FIND'.");
 
         string[] truthTable;
-        if() 
-        {
-            
-        }
+        //
     }
 }
