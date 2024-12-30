@@ -73,24 +73,58 @@ public class DefineCommand
     {
         var tokenizer = new Tokenizer(ExpressionBody, _helpers);
 
-        string token;
+        string? token;
         while ((token = tokenizer.GetNextToken()) != null)
         {
-            // If the token starts with a letter, confirm it's recognized
-            if (_helpers.IsLetter(token[0]) &&
-                !_helpers.IsParameterOrFunction(token, Parameters, _functionTable))
+            if (_helpers.IsLetter(token[0]) && _functionTable.Contains(token))
+            {
+                ValidateFunctionCall(token, tokenizer);
+            }
+            else if (_helpers.IsLetter(token[0]) && !_helpers.IsParameterOrFunction(token, Parameters, _functionTable))
             {
                 _helpers.ThrowError($"Undefined variable or function: {token}");
             }
         }
     }
 
+    private void ValidateFunctionCall(string functionName, Tokenizer tokenizer)
+    {
+        var openParen = tokenizer.GetNextToken();
+        if (openParen != "(")
+            _helpers.ThrowError($"Expected '(' after function name '{functionName}'.");
+
+        var functionNode = _functionTable.Get(functionName);
+
+        var argumentCount = 0;
+        string? token;
+        while ((token = tokenizer.PeekNextToken()) != null && token != ")")
+        {
+            token = tokenizer.GetNextToken();
+            if (token == ",") continue; 
+
+            argumentCount++;
+        }
+
+        var closeParen = tokenizer.GetNextToken();
+        if (closeParen != ")")
+            _helpers.ThrowError($"Expected ')' to close function call for '{functionName}'.");
+
+        var expectedCount = functionNode.Parameters?.Length ?? 0;
+        if (argumentCount != expectedCount)
+        {
+            _helpers.ThrowError($"Function '{functionName}' requires {expectedCount} arguments, but {argumentCount} were provided.");
+        }
+    }
+
+
     private void BuildAndStoreAST()
     {
         var parser = new Parser(_helpers);
         var builder = new ExpressionNodeBuilder(ExpressionBody, parser);
         var node = builder.Build();
+        node.Parameters = Parameters;
 
         _functionTable.Add(FunctionName, node);
     }
+
 }

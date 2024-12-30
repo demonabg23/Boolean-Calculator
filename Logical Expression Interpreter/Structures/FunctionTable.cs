@@ -1,76 +1,74 @@
 ﻿using Logical_Expression_Interpreter.Structures.Node;
 
-namespace Logical_Expression_Interpreter.Structures
+namespace Logical_Expression_Interpreter.Structures;
+
+public class FunctionTable
 {
-    public class FunctionTable
+    private string[] _keys;
+    private ExpressionNode[] _values;
+    private int _count;
+
+    public FunctionTable(int initialSize = 10)
     {
-        private string[] _keys;
-        private ExpressionNode[] _values;
-        private int _count;
+        _keys = new string[initialSize];
+        _values = new ExpressionNode[initialSize];
+        _count = 0;
+    }
 
-        public FunctionTable(int initialSize = 10)
+    public void Add(string key, ExpressionNode value)
+    {
+        for (var i = 0; i < _count; i++)
         {
-            _keys = new string[initialSize];
-            _values = new ExpressionNode[initialSize];
-            _count = 0;
+            if (_keys[i] != key) continue;
+            _values[i] = value;
+            return;
         }
 
-        public void Add(string key, ExpressionNode value)
+        if (_count >= _keys.Length)
         {
-            for (var i = 0; i < _count; i++)
-            {
-                if (_keys[i] != key) continue;
-                _values[i] = value;
-                return;
-            }
-
-
-            if (_count >= _keys.Length)
-            {
-                ResizeArrays();
-            }
-
-            _keys[_count] = key;
-            _values[_count] = value;
-            _count++;
+            ResizeArrays();
         }
 
-        private void ResizeArrays()
-        {
-            var newSize = _keys.Length * 2;
-            var newKeys = new string[newSize];
-            var newValues = new ExpressionNode[newSize];
-            for (var i = 0; i < _keys.Length; i++)
-            {
-                newKeys[i] = _keys[i];
-                newValues[i] = _values[i];
-            }
-            _keys = newKeys;
-            _values = newValues;
-        }
+        _keys[_count] = key;
+        _values[_count] = value;
+        _count++;
+    }
 
-        public ExpressionNode Get(string key)
+    private void ResizeArrays()
+    {
+        var newSize = _keys.Length * 2;
+        var newKeys = new string[newSize];
+        var newValues = new ExpressionNode[newSize];
+        for (var i = 0; i < _keys.Length; i++)
         {
-            for (var i = 0; i < _count; i++)
-            {
-                if (_keys[i] == key)
-                {
-                    return _values[i];
-                }
-            }
-            throw new Exception($"Function {key} not found.");
+            newKeys[i] = _keys[i];
+            newValues[i] = _values[i];
         }
+        _keys = newKeys;
+        _values = newValues;
+    }
 
-        public bool Contains(string key)
+    public ExpressionNode Get(string key)
+    {
+        for (var i = 0; i < _count; i++)
         {
-            for (var i = 0; i < _count; i++)
+            if (_keys[i] == key)
             {
-                if (_keys[i] == key)
-                {
-                    return true;
-                }
+                return _values[i];
             }
-            return false;
         }
+        throw new Exception($"Function {key} not found.");
+    }
+
+    public bool Contains(string key)
+    {
+        for (var i = 0; i < _count; i++)
+        {
+            if (_keys[i] == key)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

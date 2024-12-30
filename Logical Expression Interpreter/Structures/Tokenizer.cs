@@ -10,8 +10,8 @@ public class Tokenizer
 
     public Tokenizer(string expression, StringCommands helpers)
     {
-        if (string.IsNullOrEmpty(expression))
-            throw new ArgumentNullException(nameof(expression), "Expression cannot be null or empty.");
+        if (expression == null || expression.Length == 0)
+            _helpers?.ThrowError("Expression cannot be null or empty.");
 
         _expression = expression;
         _position = 0;
@@ -27,7 +27,7 @@ public class Tokenizer
 
         var currentChar = _expression[_position];
 
-        if (currentChar is '&' or '|' or '!' or '(' or ')')
+        if (currentChar is '&' or '|' or '!' or '(' or ')' or ',')
         {
             _position++;
             return _helpers.CharToString(currentChar);
@@ -35,7 +35,6 @@ public class Tokenizer
 
         if (!_helpers.IsLetter(currentChar))
             throw new InvalidOperationException(_helpers.GetErrorMessage(_expression, _position, "Invalid character"));
-
         var start = _position;
         while (_position < _expression.Length &&
                (_helpers.IsLetter(_expression[_position]) || _helpers.IsDigit(_expression[_position])))
@@ -44,6 +43,7 @@ public class Tokenizer
         }
 
         return _helpers.Substring(_expression, start, _position - start);
+
     }
 
     public string? PeekNextToken()

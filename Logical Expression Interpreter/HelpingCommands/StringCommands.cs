@@ -53,30 +53,41 @@ namespace Logical_Expression_Interpreter.HelpingCommands
 
         public string[] SplitByComma(string input)
         {
+            if (input == null || input.Length == 0)
+                ThrowError("Input cannot be null or empty.");
+
+            // Initialize result array with a maximum size
             var result = new string[10];
             var count = 0;
-
             var start = 0;
+
             for (int i = 0; i <= input.Length; i++)
             {
                 if (i == input.Length || input[i] == ',')
                 {
+                    if (start == i) 
+                        ThrowError($"Unexpected comma at position {i}.");
+
                     var segment = Trim(Substring(input, start, i - start));
                     result[count++] = segment;
-                    start = i + 1;
+                    start = i + 1; 
                 }
             }
 
             var finalResult = new string[count];
             for (var i = 0; i < count; i++)
                 finalResult[i] = result[i];
+
             return finalResult;
         }
 
         public void ValidateName(string name)
         {
+            name = Trim(name); 
+
             if (name.Length == 0 || !IsLetter(name[0]))
                 ThrowError($"Invalid name: {name}");
+
             for (var i = 1; i < name.Length; i++)
             {
                 if (!IsLetter(name[i]) && !IsDigit(name[i]))
