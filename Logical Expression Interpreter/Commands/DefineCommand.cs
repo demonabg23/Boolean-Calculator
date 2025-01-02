@@ -76,46 +76,12 @@ public class DefineCommand
         string? token;
         while ((token = tokenizer.GetNextToken()) != null)
         {
-            if (_helpers.IsLetter(token[0]) && _functionTable.Contains(token))
-            {
-                ValidateFunctionCall(token, tokenizer);
-            }
-            else if (_helpers.IsLetter(token[0]) && !_helpers.IsParameterOrFunction(token, Parameters, _functionTable))
-            {
-                _helpers.ThrowError($"Undefined variable or function: {token}");
-            }
+             if (_helpers.IsLetter(token[0]) && !_helpers.IsParameterOrFunction(token, Parameters, _functionTable))
+             {
+                 _helpers.ThrowError($"Undefined variable or function: {token}");
+             }
         }
     }
-
-    private void ValidateFunctionCall(string functionName, Tokenizer tokenizer)
-    {
-        var openParen = tokenizer.GetNextToken();
-        if (openParen != "(")
-            _helpers.ThrowError($"Expected '(' after function name '{functionName}'.");
-
-        var functionNode = _functionTable.Get(functionName);
-
-        var argumentCount = 0;
-        string? token;
-        while ((token = tokenizer.PeekNextToken()) != null && token != ")")
-        {
-            token = tokenizer.GetNextToken();
-            if (token == ",") continue; 
-
-            argumentCount++;
-        }
-
-        var closeParen = tokenizer.GetNextToken();
-        if (closeParen != ")")
-            _helpers.ThrowError($"Expected ')' to close function call for '{functionName}'.");
-
-        var expectedCount = functionNode.Parameters?.Length ?? 0;
-        if (argumentCount != expectedCount)
-        {
-            _helpers.ThrowError($"Function '{functionName}' requires {expectedCount} arguments, but {argumentCount} were provided.");
-        }
-    }
-
 
     private void BuildAndStoreAST()
     {

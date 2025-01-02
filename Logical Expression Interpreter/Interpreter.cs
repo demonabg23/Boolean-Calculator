@@ -43,12 +43,12 @@ namespace Logical_Expression_Interpreter
                     {
                         case CommandList.Define:
                             {
-                                var defineCommand = new DefineCommand(_helper, _functionTable);
-                                defineCommand.Parse(input!);
+                                var command = new DefineCommand(_helper, _functionTable);
+                                command.Parse(input!);
 
                                 Console.WriteLine(
-                                    $"Defined function '{defineCommand.FunctionName}' " +
-                                    $"with parameters [{string.Join(", ", defineCommand.Parameters)}]."
+                                    $"Defined function '{command.FunctionName}' " +
+                                    $"with parameters [{string.Join(", ", command.Parameters)}]."
                                 );
                                 break;
                             }

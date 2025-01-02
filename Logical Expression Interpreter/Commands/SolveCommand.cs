@@ -33,58 +33,48 @@ namespace Logical_Expression_Interpreter.Commands
             if (!_functionTable.Contains(funcName))
                 throw new InvalidOperationException($"Function '{funcName}' is not defined.");
 
-            var rootNode = _functionTable.Get(funcName);
-            var variables = CollectVariables(rootNode);
-            var variableMap = BuildVariableMap(variables, values);
+            var functionNode = _functionTable.Get(funcName);
 
-            return Evaluate(rootNode, variableMap);
+            if (functionNode.Parameters == null)
+                throw new InvalidOperationException($"Function '{funcName}' has no parameters.");
+
+            if (functionNode.Parameters.Length != values.Length)
+                throw new InvalidOperationException($"Function '{funcName}' requires {functionNode.Parameters.Length} arguments, but {values.Length} were provided.");
+
+            var variableMap = BuildVariableMap(functionNode.Parameters, values);
+            return Evaluate(functionNode, variableMap);
         }
 
-        private string[] CollectVariables(ExpressionNode node)
+        private CustomDictionary BuildVariableMap(string[] parameters, string[] values)
         {
-            var variables = new CustomSet();
-            CollectVariablesRecursive(node, variables);
-            return variables.ToArray();
-        }
-
-        private void CollectVariablesRecursive(ExpressionNode node, CustomSet variables)
-        {
-            if (node == null) return;
-
-            if (node.Left == null && node.Right == null)
-            {
-                if (_helper.IsLetter(node.Value[0]))
-                    variables.Add(node.Value);
-            }
-            else
-            {
-                CollectVariablesRecursive(node.Left, variables);
-                CollectVariablesRecursive(node.Right, variables);
-            }
-        }
-
-        private CustomDictionary BuildVariableMap(string[] variables, string[] values)
-        {
-            if (variables.Length != values.Length)
+            if (parameters.Length != values.Length)
                 throw new InvalidOperationException("Mismatched argument count.");
 
-            var map = new CustomDictionary(variables.Length);
-            for (var i = 0; i < variables.Length; i++)
+            var map = new CustomDictionary(parameters.Length);
+            for (var i = 0; i < parameters.Length; i++)
             {
-                map.Add(variables[i], int.Parse(values[i]));
+                map.Add(parameters[i], int.Parse(values[i]));
             }
             return map;
         }
 
         private int Evaluate(ExpressionNode node, CustomDictionary variableMap)
         {
-            if (node.Left == null && node.Right == null)
+            if (node.IsFunctionCall)
             {
-                return variableMap.ContainsKey(node.Value) ? variableMap.Get(node.Value) : int.Parse(node.Value);
+                return EvaluateNestedFunction(node, variableMap);
             }
 
-            var leftResult = Evaluate(node.Left, variableMap);
-            var rightResult = node.Right != null ? Evaluate(node.Right, variableMap) : 0;
+            if (node.Left == null && node.Right == null)
+            {
+                if (variableMap.ContainsKey(node.Value))
+                    return variableMap.Get(node.Value);
+
+                return int.Parse(node.Value);
+            }
+
+            var leftResult = (node.Left != null) ? Evaluate(node.Left, variableMap) : 0;
+            var rightResult = (node.Right != null) ? Evaluate(node.Right, variableMap) : 0;
 
             return node.Value switch
             {
@@ -94,5 +84,35 @@ namespace Logical_Expression_Interpreter.Commands
                 _ => throw new InvalidOperationException($"Unknown operator: {node.Value}")
             };
         }
+
+        private int EvaluateNestedFunction(ExpressionNode callNode, CustomDictionary variableMap)
+        {
+            var functionName = callNode.Value;
+            var functionNode = _functionTable.Get(functionName);
+
+            if (functionNode.Parameters == null)
+                throw new InvalidOperationException($"Function '{functionName}' has no parameters.");
+
+            if (callNode.Arguments == null)
+                throw new InvalidOperationException($"Function call '{functionName}' has no arguments array.");
+
+            if (functionNode.Parameters.Length != callNode.Arguments.Length)
+                throw new InvalidOperationException(
+                    $"Function '{functionName}' requires {functionNode.Parameters.Length} arguments, " +
+                    $"but {callNode.Arguments.Length} were provided."
+                );
+
+            var nestedMap = new CustomDictionary(functionNode.Parameters.Length);
+            for (var i = 0; i < functionNode.Parameters.Length; i++)
+            {
+                var paramName = functionNode.Parameters[i];
+                var argValue = Evaluate(callNode.Arguments[i], variableMap);
+                nestedMap.Add(paramName, argValue);
+            }
+
+            return Evaluate(functionNode, nestedMap);
+        }
+
+
     }
 }

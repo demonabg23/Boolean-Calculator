@@ -5,6 +5,8 @@
         public string Value { get; set; }
         public ExpressionNode? Left { get; set; }
         public ExpressionNode? Right { get; set; }
+        public bool IsFunctionCall { get; set; }
+        public ExpressionNode[] Arguments { get; set; }
         public string[]? Parameters { get; set; }
 
 
