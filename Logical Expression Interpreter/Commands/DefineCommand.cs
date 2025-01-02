@@ -8,15 +8,17 @@ public class DefineCommand
 {
     private readonly StringCommands _helpers;
     private readonly FunctionTable _functionTable;
+    private readonly Parser _parser;
 
     public string FunctionName { get; private set; }
     public string[] Parameters { get; private set; }
     public string ExpressionBody { get; private set; }
 
-    public DefineCommand(StringCommands helpers, FunctionTable functionTable)
+    public DefineCommand(StringCommands helpers, FunctionTable functionTable, Parser parsers)
     {
         _helpers = helpers ?? throw new ArgumentNullException(nameof(helpers));
         _functionTable = functionTable ?? throw new ArgumentNullException(nameof(functionTable));
+        _parser = parsers ?? throw new ArgumentNullException(nameof(parsers));
     }
 
     public void Parse(string input)
@@ -76,11 +78,58 @@ public class DefineCommand
         string? token;
         while ((token = tokenizer.GetNextToken()) != null)
         {
-             if (_helpers.IsLetter(token[0]) && !_helpers.IsParameterOrFunction(token, Parameters, _functionTable))
+             if (_helpers.IsLetter(token[0]))
+             {
+                 if (_functionTable.Contains(token))
+                 {
+                    ValidateNestedFunctionCall(token, tokenizer);
+                 }
+             }
+             else if (_helpers.IsParameterOrFunction(token, Parameters, _functionTable))
              {
                  _helpers.ThrowError($"Undefined variable or function: {token}");
              }
         }
+    }
+
+    private void ValidateNestedFunctionCall(string functionName, Tokenizer tokenizer)
+    {
+        var open = tokenizer.GetNextToken();
+        if (open != "(")
+            _helpers.ThrowError($"Expected '(' after function name '{functionName}'.");
+        
+        var functionNode = _functionTable.Get(functionName) ?? throw new InvalidOperationException($"Function '{functionName}' not found.");
+        var expectedParamsCount = functionNode.Parameters.Length;
+        var actualParams = 0;
+
+        var next = tokenizer.PeekNextToken();
+        if (next is null or ")") return;
+        while (true)
+        {
+            _parser.ParseExpressionNode(tokenizer);
+            actualParams++;
+
+            var maybeComma = tokenizer.PeekNextToken();
+            if (maybeComma == ",")
+            {
+                tokenizer.GetNextToken(); // consume ","
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        var close = tokenizer.GetNextToken();
+        if (close != ")")
+            _helpers.ThrowError($"Expected ')' after function call '{functionName}'.");
+
+        if (expectedParamsCount != actualParams)
+        {
+            _helpers.ThrowError($"Function '{functionName}' expects {expectedParamsCount} parameters, but got {actualParams}.");
+        }
+
     }
 
     private void BuildAndStoreAST()

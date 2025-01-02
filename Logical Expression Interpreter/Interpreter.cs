@@ -8,11 +8,13 @@ namespace Logical_Expression_Interpreter
     {
         private readonly StringCommands _helper;
         private readonly FunctionTable _functionTable;
+        private readonly Parser _parser;
 
-        public Interpreter(StringCommands helper, FunctionTable functionTable)
+        public Interpreter(StringCommands helper, FunctionTable functionTable, Parser parser)
         {
             _helper = helper ?? throw new ArgumentNullException(nameof(helper));
             _functionTable = functionTable ?? throw new ArgumentNullException(nameof(functionTable));
+            _parser = parser ?? throw new ArgumentNullException(nameof(parser));
         }
 
         public void Run()
@@ -43,7 +45,7 @@ namespace Logical_Expression_Interpreter
                     {
                         case CommandList.Define:
                             {
-                                var command = new DefineCommand(_helper, _functionTable);
+                                var command = new DefineCommand(_helper, _functionTable, _parser);
                                 command.Parse(input!);
 
                                 Console.WriteLine(
