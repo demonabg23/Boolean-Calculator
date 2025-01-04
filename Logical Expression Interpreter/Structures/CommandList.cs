@@ -15,7 +15,7 @@ namespace Logical_Expression_Interpreter.Structures
 
     public static class CommandListHelper
     {
-        public static CommandList DetectCommandType(string input, StringCommands helper)
+        public static CommandList DetectCommandType(string? input, StringCommands helper)
         {
             if (helper.StartsWithIgnoreCase(input, "define")) return CommandList.Define;
             if (helper.StartsWithIgnoreCase(input, "solve")) return CommandList.Solve;

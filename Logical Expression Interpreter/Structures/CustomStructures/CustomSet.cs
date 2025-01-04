@@ -5,7 +5,7 @@
         private const int DefaultCapacity = 16;
         private const double LoadFactorThreshold = 0.75;
 
-        private string[] _elements;
+        private string?[] _elements;
         private bool[] _occupied;
         private int _count;
 
@@ -18,7 +18,7 @@
 
         public int Count => _count;
 
-        public void Add(string element)
+        public void Add(string? element)
         {
             if (element == null)
                 throw new ArgumentNullException(nameof(element));
@@ -39,7 +39,7 @@
             _count++;
         }
 
-        public bool Contains(string element)
+        public bool Contains(string? element)
         {
             if (element == null)
                 throw new ArgumentNullException(nameof(element));
@@ -58,9 +58,9 @@
             return false;
         }
 
-        public string[] ToArray()
+        public string?[] ToArray()
         {
-            var result = new string[_count];
+            string?[] result = new string[_count];
             var index = 0;
             for (var i = 0; i < _elements.Length; i++)
             {
@@ -72,7 +72,7 @@
             return result;
         }
 
-        private int GetIndexForElement(string element)
+        private int GetIndexForElement(string? element)
         {
             var hash = 0;
             foreach (var t in element)

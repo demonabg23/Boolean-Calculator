@@ -8,7 +8,7 @@ namespace Logical_Expression_Interpreter.Structures.Node
         private readonly StringCommands _helpers = new();
         private readonly Parser _parser;
 
-        public ExpressionNodeBuilder(string expression, Parser parser)
+        public ExpressionNodeBuilder(string? expression, Parser parser)
         {
             _tokenizer = new Tokenizer(expression, _helpers);
             _parser = parser;

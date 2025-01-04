@@ -16,7 +16,7 @@ namespace Logical_Expression_Interpreter.Commands
             _functionTable = functionTable;
         }
 
-        public int Execute(string input)
+        public int Execute(string? input)
         {
             if (!_helper.StartsWithIgnoreCase(input, "SOLVE"))
                 throw new InvalidOperationException("Invalid command. Must start with 'SOLVE'.");
@@ -45,7 +45,7 @@ namespace Logical_Expression_Interpreter.Commands
             return Evaluate(functionNode, variableMap);
         }
 
-        private CustomDictionary BuildVariableMap(string[] parameters, string[] values)
+        private CustomDictionary BuildVariableMap(string?[] parameters, string?[] values)
         {
             if (parameters.Length != values.Length)
                 throw new InvalidOperationException("Mismatched argument count.");

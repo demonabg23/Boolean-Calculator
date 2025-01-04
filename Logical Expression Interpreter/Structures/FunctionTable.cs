@@ -1,10 +1,11 @@
-﻿using Logical_Expression_Interpreter.Structures.Node;
+﻿using Logical_Expression_Interpreter.Structures.CustomStructures;
+using Logical_Expression_Interpreter.Structures.Node;
 
 namespace Logical_Expression_Interpreter.Structures;
 
 public class FunctionTable
 {
-    private string[] _keys;
+    private string?[] _keys;
     private ExpressionNode[] _values;
     private int _count;
 
@@ -15,7 +16,7 @@ public class FunctionTable
         _count = 0;
     }
 
-    public void Add(string key, ExpressionNode value)
+    public void Add(string? key, ExpressionNode value)
     {
         for (var i = 0; i < _count; i++)
         {
@@ -37,7 +38,7 @@ public class FunctionTable
     private void ResizeArrays()
     {
         var newSize = _keys.Length * 2;
-        var newKeys = new string[newSize];
+        string?[] newKeys = new string[newSize];
         var newValues = new ExpressionNode[newSize];
         for (var i = 0; i < _keys.Length; i++)
         {
@@ -48,7 +49,7 @@ public class FunctionTable
         _values = newValues;
     }
 
-    public ExpressionNode Get(string key)
+    public ExpressionNode Get(string? key)
     {
         for (var i = 0; i < _count; i++)
         {
@@ -59,8 +60,17 @@ public class FunctionTable
         }
         throw new Exception($"Function {key} not found.");
     }
+    public CustomList<string?> GetAllFunctionNames()
+    {
+        var names = new CustomList<string?>();
+        for (var i = 0; i < _count; i++)
+        {
+            names.Add(_keys[i]);
+        }
+        return names;
+    }
 
-    public bool Contains(string key)
+    public bool Contains(string? key)
     {
         for (var i = 0; i < _count; i++)
         {

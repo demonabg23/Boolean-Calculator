@@ -4,11 +4,11 @@ namespace Logical_Expression_Interpreter.Structures;
 
 public class Tokenizer
 {
-    private readonly string _expression;
+    private readonly string? _expression;
     private int _position;
     private readonly StringCommands _helpers;
 
-    public Tokenizer(string expression, StringCommands helpers)
+    public Tokenizer(string? expression, StringCommands helpers)
     {
         if (expression == null || expression.Length == 0)
             _helpers?.ThrowError("Expression cannot be null or empty.");

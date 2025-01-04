@@ -10,9 +10,9 @@ public class DefineCommand
     private readonly FunctionTable _functionTable;
     private readonly Parser _parser;
 
-    public string FunctionName { get; private set; }
-    public string[] Parameters { get; private set; }
-    public string ExpressionBody { get; private set; }
+    public string? FunctionName { get; private set; }
+    public string?[] Parameters { get; private set; }
+    public string? ExpressionBody { get; private set; }
 
     public DefineCommand(StringCommands helpers, FunctionTable functionTable, Parser parsers)
     {
@@ -21,7 +21,7 @@ public class DefineCommand
         _parser = parsers ?? throw new ArgumentNullException(nameof(parsers));
     }
 
-    public void Parse(string input)
+    public void Parse(string? input)
     {
         if (string.IsNullOrEmpty(input))
             throw new ArgumentNullException(nameof(input), "Input cannot be null or empty.");
@@ -54,7 +54,7 @@ public class DefineCommand
         BuildAndStoreAST();
     }
 
-    private void ParseSignature(string signature)
+    private void ParseSignature(string? signature)
     {
         var openParen = _helpers.FindCharacter(signature, '(');
         var closeParen = _helpers.FindCharacter(signature, ')');
@@ -92,7 +92,7 @@ public class DefineCommand
         }
     }
 
-    private void ValidateNestedFunctionCall(string functionName, Tokenizer tokenizer)
+    private void ValidateNestedFunctionCall(string? functionName, Tokenizer tokenizer)
     {
         var open = tokenizer.GetNextToken();
         if (open != "(")

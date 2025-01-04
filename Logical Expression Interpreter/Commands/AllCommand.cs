@@ -16,7 +16,7 @@ namespace Logical_Expression_Interpreter.Commands
             _functionTable = functionTable ?? throw new ArgumentNullException(nameof(functionTable));
         }
 
-        public void Execute(string input)
+        public void Execute(string? input)
         {
             if (!_helper.StartsWithIgnoreCase(input, "ALL"))
                 throw new InvalidOperationException("Invalid command. Must start with 'ALL'.");
@@ -40,7 +40,7 @@ namespace Logical_Expression_Interpreter.Commands
             }
         }
 
-        private string[] CollectVariables(ExpressionNode node)
+        private string?[] CollectVariables(ExpressionNode node)
         {
             var variables = new CustomSet();
             CollectVariablesRecursive(node, variables);
@@ -78,7 +78,7 @@ namespace Logical_Expression_Interpreter.Commands
             return table;
         }
 
-        private CustomDictionary BuildVariableMap(string[] variables, int[] values)
+        private CustomDictionary BuildVariableMap(string?[] variables, int[] values)
         {
             if (variables.Length != values.Length)
                 throw new InvalidOperationException("Mismatched argument count.");

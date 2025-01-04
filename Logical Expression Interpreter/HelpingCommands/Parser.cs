@@ -103,7 +103,7 @@ namespace Logical_Expression_Interpreter.HelpingCommands
             }
         }
 
-        private ExpressionNode ParseFunctionCall(string funcName, Tokenizer tokenizer)
+        private ExpressionNode ParseFunctionCall(string? funcName, Tokenizer tokenizer)
         {
             var openParen = tokenizer.GetNextToken();
             if (openParen != "(")

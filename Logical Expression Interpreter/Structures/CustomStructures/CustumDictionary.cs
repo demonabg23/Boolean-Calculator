@@ -5,7 +5,7 @@
         private const int DefaultCapacity = 16;
         private const double LoadFactorThreshold = 0.75;
 
-        private string[] _keys;
+        private string?[] _keys;
         private int[] _values;
         private bool[] _occupied;
         private int _count;
@@ -20,7 +20,7 @@
 
         public int Count => _count;
 
-        public void Add(string key, int value)
+        public void Add(string? key, int value)
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
@@ -42,7 +42,7 @@
             _count++;
         }
 
-        public bool ContainsKey(string key)
+        public bool ContainsKey(string? key)
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
@@ -61,7 +61,7 @@
             return false;
         }
 
-        public int Get(string key)
+        public int Get(string? key)
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
@@ -80,7 +80,7 @@
             throw new InvalidOperationException($"Key '{key}' not found.");
         }
 
-        public void Remove(string key)
+        public void Remove(string? key)
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
@@ -103,7 +103,7 @@
             throw new InvalidOperationException($"Key '{key}' not found.");
         }
 
-        private int GetIndexForKey(string key)
+        private int GetIndexForKey(string? key)
         {
             var hash = 0;
             foreach (var t in key)

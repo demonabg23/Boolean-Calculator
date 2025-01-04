@@ -70,7 +70,8 @@ namespace Logical_Expression_Interpreter
                         case CommandList.Find:
                             {
                                 var command = new FindCommand(_helper, _functionTable);
-                                
+                                var result = command.Execute(input!);
+                                Console.WriteLine(result);
                                 break;
                             }
                         case CommandList.Exit:
