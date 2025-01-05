@@ -71,7 +71,7 @@ namespace Logical_Expression_Interpreter
                             {
                                 var command = new FindCommand(_helper, _functionTable);
                                 var result = command.Execute(input!);
-                                Console.WriteLine(result);
+                                Console.WriteLine($"result {result}");
                                 break;
                             }
                         case CommandList.Exit:
