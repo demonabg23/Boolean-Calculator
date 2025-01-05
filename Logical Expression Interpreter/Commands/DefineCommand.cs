@@ -21,7 +21,7 @@ public class DefineCommand
         _parser = parsers ?? throw new ArgumentNullException(nameof(parsers));
     }
 
-    public void Parse(string? input)
+    public void Parse(string input)
     {
         if (string.IsNullOrEmpty(input))
             throw new ArgumentNullException(nameof(input), "Input cannot be null or empty.");
@@ -50,11 +50,14 @@ public class DefineCommand
         );
 
         ParseSignature(signature);
+
         ValidateExpression();
+
         BuildAndStoreAST();
     }
 
-    private void ParseSignature(string? signature)
+
+    private void ParseSignature(string signature)
     {
         var openParen = _helpers.FindCharacter(signature, '(');
         var closeParen = _helpers.FindCharacter(signature, ')');
@@ -78,21 +81,20 @@ public class DefineCommand
         string? token;
         while ((token = tokenizer.GetNextToken()) != null)
         {
-             if (_helpers.IsLetter(token[0]))
-             {
-                 if (_functionTable.Contains(token))
-                 {
-                    ValidateNestedFunctionCall(token, tokenizer);
-                 }
-             }
-             else if (_helpers.IsParameterOrFunction(token, Parameters, _functionTable))
-             {
-                 _helpers.ThrowError($"Undefined variable or function: {token}");
-             }
+            if (!_helpers.IsLetter(token[0])) continue;
+            if (_functionTable.Contains(token))
+            {
+                ValidateNestedFunctionCall(token, tokenizer);
+            }
+            else if (!_helpers.IsParameterOrFunction(token, Parameters, _functionTable))
+            {
+                _helpers.ThrowError($"Undefined variable or function: {token}");
+            }
         }
     }
 
-    private void ValidateNestedFunctionCall(string? functionName, Tokenizer tokenizer)
+
+    private void ValidateNestedFunctionCall(string functionName, Tokenizer tokenizer)
     {
         var open = tokenizer.GetNextToken();
         if (open != "(")
