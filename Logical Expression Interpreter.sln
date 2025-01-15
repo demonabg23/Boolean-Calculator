@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logical Expression Interpreter", "Logical Expression Interpreter\Logical Expression Interpreter.csproj", "{A43C8116-BF07-4DDD-B0DC-21B250F7B16B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logical Expression Interpreter", "Logical Expression Interpreter\Logical Expression Interpreter.csproj", "{A43C8116-BF07-4DDD-B0DC-21B250F7B16B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logical Expression Interpreter UI", "Logical Expression Interpreter UI\Logical Expression Interpreter UI\Logical Expression Interpreter UI.csproj", "{7C3DB604-051E-465F-90A1-35C9BA5A390D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A43C8116-BF07-4DDD-B0DC-21B250F7B16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A43C8116-BF07-4DDD-B0DC-21B250F7B16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A43C8116-BF07-4DDD-B0DC-21B250F7B16B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C3DB604-051E-465F-90A1-35C9BA5A390D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C3DB604-051E-465F-90A1-35C9BA5A390D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C3DB604-051E-465F-90A1-35C9BA5A390D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C3DB604-051E-465F-90A1-35C9BA5A390D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
-﻿using Logical_Expression_Interpreter.Structures;
-using Logical_Expression_Interpreter.Structures.CustomStructures;
+﻿using Logical_Expression_Interpreter_UI.Structures;
+using Logical_Expression_Interpreter_UI.Structures.CustomStructures;
 
-namespace Logical_Expression_Interpreter.HelpingCommands
+namespace Logical_Expression_Interpreter_UI.HelpingCommands
 {
     public class StringCommands
     {

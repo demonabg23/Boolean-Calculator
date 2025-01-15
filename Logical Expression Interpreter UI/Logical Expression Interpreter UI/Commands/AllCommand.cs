@@ -1,9 +1,9 @@
-﻿using Logical_Expression_Interpreter.HelpingCommands;
-using Logical_Expression_Interpreter.Structures;
-using Logical_Expression_Interpreter.Structures.CustomStructures;
-using Logical_Expression_Interpreter.Structures.Node;
+﻿using Logical_Expression_Interpreter_UI.HelpingCommands;
+using Logical_Expression_Interpreter_UI.Structures;
+using Logical_Expression_Interpreter_UI.Structures.CustomStructures;
+using Logical_Expression_Interpreter_UI.Structures.Node;
 
-namespace Logical_Expression_Interpreter.Commands
+namespace Logical_Expression_Interpreter_UI.Commands
 {
     public class AllCommand
     {

@@ -19,13 +19,16 @@ namespace Logical_Expression_Interpreter
 
         public void Run()
         {
-            Console.WriteLine("Welcome to the Logical Expression Interpreter!\n");
-            Console.WriteLine("You can type commands like:");
-            Console.WriteLine("  DEFINE func1(a, b): a & b");
-            Console.WriteLine("  SOLVE func1(1, 0)");
-            Console.WriteLine("  ALL");
-            Console.WriteLine("  FIND func1");
-            Console.WriteLine("\nType 'exit' or 'quit' to stop.\n");
+            Console.WriteLine(@"Welcome to the Logical Expression Interpreter!
+");
+            Console.WriteLine(@"You can type commands like:");
+            Console.WriteLine(@"  DEFINE func1(a, b): a & b");
+            Console.WriteLine(@"  SOLVE func1(1, 0)");
+            Console.WriteLine(@"  ALL func1");
+            Console.WriteLine(@"  FIND 0,0,1:0;");
+            Console.WriteLine(@"
+Type 'exit' or 'quit' to stop.
+");
 
             while (true)
             {
@@ -58,7 +61,7 @@ namespace Logical_Expression_Interpreter
                         {
                             var command = new SolveCommand(_helper, _functionTable);
                             var result = command.Execute(input!);
-                            Console.WriteLine($"Result: {result}");
+                            Console.WriteLine($@"Result: {result}");
                             break;
                         }
                         case CommandList.All:
@@ -71,26 +74,26 @@ namespace Logical_Expression_Interpreter
                             {
                                 var command = new FindCommand(_helper, _functionTable);
                                 var result = command.Execute(input!);
-                                Console.WriteLine($"result {result}");
+                                Console.WriteLine($@"result {result}");
                                 break;
                             }
                         case CommandList.Exit:
                         case CommandList.Quit:
                             {
-                                Console.WriteLine("Exiting interpreter...");
+                                Console.WriteLine(@"Exiting interpreter...");
                                 return; 
                             }
                         case CommandList.Unknown:
                         default:
                             {
-                                Console.WriteLine("Unrecognized command. Try DEFINE, SOLVE, ALL, FIND, or exit.");
+                                Console.WriteLine(@"Unrecognized command. Try DEFINE, SOLVE, ALL, FIND, or exit.");
                                 break;
                             }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    Console.WriteLine($@"Error: {ex.Message}");
                 }
             }
         }

@@ -1,9 +1,9 @@
-﻿using Logical_Expression_Interpreter.HelpingCommands;
-using Logical_Expression_Interpreter.Structures;
-using Logical_Expression_Interpreter.Structures.CustomStructures;
-using Logical_Expression_Interpreter.Structures.Node;
+﻿using Logical_Expression_Interpreter_UI.HelpingCommands;
+using Logical_Expression_Interpreter_UI.Structures;
+using Logical_Expression_Interpreter_UI.Structures.CustomStructures;
+using Logical_Expression_Interpreter_UI.Structures.Node;
 
-namespace Logical_Expression_Interpreter.Commands
+namespace Logical_Expression_Interpreter_UI.Commands
 {
     public class FindCommandGA
     {
@@ -242,7 +242,7 @@ namespace Logical_Expression_Interpreter.Commands
             {
                 var expected = row[^1];
                 var varMap = new CustomDictionary(table.NumInputs);
-                for (var j = 0; j < table.NumInputs; j++)
+                for (int j = 0; j < table.NumInputs; j++)
                 {
                     varMap.Add(VarNames[j], row[j]);
                 }

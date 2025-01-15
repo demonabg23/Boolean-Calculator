@@ -1,8 +1,8 @@
-﻿using Logical_Expression_Interpreter.Structures;
-using Logical_Expression_Interpreter.Structures.CustomStructures;
-using Logical_Expression_Interpreter.Structures.Node;
+﻿using Logical_Expression_Interpreter_UI.Structures;
+using Logical_Expression_Interpreter_UI.Structures.CustomStructures;
+using Logical_Expression_Interpreter_UI.Structures.Node;
 
-namespace Logical_Expression_Interpreter.HelpingCommands
+namespace Logical_Expression_Interpreter_UI.HelpingCommands
 {
     public class Parser
     {
@@ -13,7 +13,7 @@ namespace Logical_Expression_Interpreter.HelpingCommands
             _helper = helper ?? throw new ArgumentNullException(nameof(helper));
         }
 
-        public ExpressionNode ParseExpressionNode(Tokenizer tokenizer) // builder
+        public ExpressionNode ParseExpressionNode(Tokenizer tokenizer)
         {
             if (tokenizer == null)
                 throw new ArgumentNullException(nameof(tokenizer), "Tokenizer cannot be null.");
